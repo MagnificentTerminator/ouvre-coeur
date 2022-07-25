@@ -1,14 +1,7 @@
 import React, { useMemo, useRef } from "react";
 import * as THREE from "three";
 import * as meshline from "threejs-meshline";
-import {
-  extend,
-  Canvas,
-  useFrame,
-  useThree,
-  useRender,
-  useEffect
-} from "react-three-fiber";
+import { extend, Canvas, useFrame, useThree } from "react-three-fiber";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Curves } from "three/examples/jsm/curves/CurveExtras";
 
@@ -32,22 +25,14 @@ const Controls = () => {
   useFrame(() => {
     orbitRef.current.update();
   });
-  return (
-    <orbitControls
-      args={[camera, gl.domElement]}
-      ref={orbitRef}
-      enableKeys={false}
-    />
-  );
+  return <orbitControls args={[camera, gl.domElement]} ref={orbitRef} enableKeys={false} />;
 };
 
 function Effects({ factor }) {
   const { gl, scene, camera, size } = useThree();
   const composer = useRef();
-  useEffect(() => void composer.current.obj.setSize(size.width, size.height), [
-    size
-  ]);
-  useRender(() => composer.current.obj.render(), true);
+  // useEffect(() => void composer.current.obj.setSize(size.width, size.height), [size]);
+  // useRender(() => composer.current.obj.render(), true);
   return (
     <effectComposer ref={composer} args={[gl]}>
       <renderPass name="passes" args={[scene, camera]} />
@@ -79,7 +64,7 @@ function Fatline({ curve, width, color, speed }) {
 }
 
 const lineWidth = 0.2;
-const count = 200;
+const count = 300;
 
 function Lines({ count, colors }) {
   const lines = useMemo(
@@ -91,7 +76,7 @@ function Lines({ count, colors }) {
           color: colors[parseInt(colors.length * Math.random())],
           width: lineWidth,
           speed: Math.max(0.0001, 0.0005 * Math.random()),
-          curve
+          curve,
         };
       }),
     [colors, count]
@@ -102,7 +87,8 @@ function Lines({ count, colors }) {
 export default function App() {
   return (
     <div className="App">
-      <Canvas camera={{ position: [0, 0, 300], fov: 25 }}>
+      <h1 className="title">Welcome to Docker</h1>
+      <Canvas className="canva" camera={{ position: [0, 0, 320], fov: 25 }}>
         <Controls />
         <Lines count={count} colors={["#9e91bc", "#4a4e7c", "#6f7db7"]} />
       </Canvas>
